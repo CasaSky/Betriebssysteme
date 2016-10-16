@@ -41,29 +41,42 @@ public class SimRace extends Thread {
             // Ein Stop der Autos pro Runde
             while(!this.isInterrupted() && i<raceRounds) {
                 roundTime = generateRRT();
-                // Jetzt alle Autos fuer diese Zeit anhalten
-                for (Car car : cars) {
+                // Jetzt alle Autos fuer diese Zeit kurz anhalten
+              /*  for (Car car : cars) {
                     try {
                         car.sleep(roundTime);
                         if (!accident.isAlive()) {
-                            this.interrupt();
+                            car.interrupt();
                         }
                     } catch (InterruptedException e) {
                         car.interrupt(); // Auto anhalten
-                        //this.interrupt();
                         System.err.println("Anhalten von "+car.getName()+" wegen eines Unfalls!");
+                        break;
                     }
-                }
-                i++;
+                }*/
+                    try {
+                        Thread.sleep(roundTime);
+                        if (!accident.isAlive()) {
+                            Thread.currentThread().interrupt(); // Wie eine Exception erzeugen? Laufender Thread interuppten
+                            System.err.println("Anhalten des Rennen wegen eines Unfalls!");
+                            //this.currentThread().interrupt();
+                        }
+                    } catch (InterruptedException e) {
+                        this.interrupt();
+                        System.err.println("Anhalten des Rennen wegen eines Unfalls!");
+                    }
+                    i++;
             }
+
+        // Ende des Rennen - Alle Autos anhalten(Ziel erreicht)
+        for (Car car : cars) {
+            if (car.isAlive()) {
+                car.interrupt();
+            }
+        }
 
             // Nichts tun falls ein Unfall passiert ist
             if (!this.isInterrupted()) {
-                // Ende des Rennen - Alle Autos anhalten(Ziel erreicht)
-                for (Car car : cars) {
-                    car.interrupt();
-                }
-
                 // Warten bis alle Autos am Ziel sind, anschliessend sortieren und Ergebnis anzeigen
                 waitForFinishAndSort();
             }
@@ -76,7 +89,6 @@ public class SimRace extends Thread {
                 try {
                     car.join();
                 } catch (InterruptedException e) {
-                    this.interrupt();
                 }
             }
             allFinish = true;
@@ -119,7 +131,7 @@ public class SimRace extends Thread {
 
 
     public static void main(String[] args) {
-        final int NUMBEROFCARS = 5;
+        final int NUMBEROFCARS = 10;
         final int RACEROUNDS = 3;
 
         SimRace simRace = new SimRace(NUMBEROFCARS, RACEROUNDS);
@@ -129,7 +141,6 @@ public class SimRace extends Thread {
         try {
             simRace.join();
         } catch (InterruptedException e) {
-            simRace.interrupt();
         }
 
     }
