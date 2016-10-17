@@ -13,8 +13,6 @@ public class SimRace extends Thread {
 
     public int numberOfCars;
     public int raceRounds;
-    public int roundTime; // Zeit einer Runde in ms
-    public boolean allFinish;
 
     public Accident accident;
     public List<Car> cars = new ArrayList<>(); // Liste der Autos
@@ -40,11 +38,6 @@ public class SimRace extends Thread {
             car.start();
         }
 
-       /*try {
-            accident.join();
-        } catch (InterruptedException e) {
-        }*/
-
         for (Car car : cars) {
             try {
                 car.join();
@@ -53,6 +46,7 @@ public class SimRace extends Thread {
             }
         }
 
+        // Alle sind haben das Rennen beendet
         accident.interrupt();
         if(accident.isAlive()) {
             sortCars();
@@ -79,7 +73,7 @@ public class SimRace extends Thread {
     }
 
     public static void main(String[] args) {
-        final int NUMBEROFCARS = 10;
+        final int NUMBEROFCARS = 5;
         final int RACEROUNDS = 3;
 
         SimRace simRace = new SimRace(NUMBEROFCARS, RACEROUNDS);

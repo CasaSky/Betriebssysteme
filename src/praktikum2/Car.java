@@ -16,7 +16,6 @@ public class Car extends Thread implements Comparable<Car> {
     public Car(int number, int raceRounds) {
         this.setName("Wagen "+number);
         this.raceRounds = raceRounds;
-        startTime = System.nanoTime();
     }
 
     public Double getRunTime() {
@@ -25,6 +24,7 @@ public class Car extends Thread implements Comparable<Car> {
 
     // Nach jeder gelaufene Runde wird fuer eine random Zeit das Auto angehalten
     public void run() {
+        startTime = System.nanoTime();
         drive();
     }
 

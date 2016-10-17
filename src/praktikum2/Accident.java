@@ -13,15 +13,6 @@ public class Accident extends Thread {
     public Accident(List<Car> cars) {
         this.cars = cars;
     }
-    /**
-     * Generiet eine Randomzeit
-     * link="http://stackoverflow.com/questions/363681/generating-random-integers-in-a-specific-range"
-     */
-    public Long generateRT() {
-        // nextInt is normally exclusive of the top value,
-        // so add 1 to make it inclusive
-        return ThreadLocalRandom.current().nextLong(0, 500);
-    }
 
     public void run() {
         Long accidentTime = generateRT();
@@ -42,4 +33,15 @@ public class Accident extends Thread {
         System.err.println("Unfall!");
         throw new InterruptedException();
     }
+
+    /**
+     * Generiet eine Randomzeit
+     * link="http://stackoverflow.com/questions/363681/generating-random-integers-in-a-specific-range"
+     */
+    public Long generateRT() {
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        return ThreadLocalRandom.current().nextLong(0, 500);
+    }
+
 }
