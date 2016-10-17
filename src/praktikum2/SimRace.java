@@ -3,8 +3,6 @@ package praktikum2;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by talal on 16.10.16.
@@ -55,6 +53,7 @@ public class SimRace extends Thread {
             }
         }
 
+        accident.interrupt();
         if(accident.isAlive()) {
             sortCars();
         }

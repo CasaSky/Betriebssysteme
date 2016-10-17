@@ -39,6 +39,7 @@ public class Accident extends Thread {
                 car.interrupt();
             }
         }
+        System.err.println("Unfall!");
         throw new InterruptedException();
     }
 }
