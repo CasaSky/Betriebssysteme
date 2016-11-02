@@ -62,15 +62,15 @@ public class SimRace extends Thread {
 
     }
 
-    // Ausgabe
-    public String toString() {
-        String result = "**** Endstand ****\n";
-        for (Car car : cars) {
-            result+=(cars.indexOf(car)+1)+". Platz: "+car.toString();
-        }
-        return result;
-        //return cars.toString();
+// Ausgabe
+public String toString() {
+    String result = "**** Endstand ****\n";
+    for (Car car : cars) {
+        result+=(cars.indexOf(car)+1)+". Platz: "+car.toString();
     }
+    return result;
+    //return cars.toString();
+}
 
     public static void main(String[] args) {
         final int NUMBEROFCARS = 5;
