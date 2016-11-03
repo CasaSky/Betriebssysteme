@@ -9,13 +9,13 @@ import java.util.List;
  */
 public class Mensa {
     public static void main(String[] args) {
-        KassenQueue<Student> kassenQueue = new KassenQueue<>();
+        KassenQueue<Kasse> kassenQueue = new KassenQueue<>();
 
         LinkedList<Kasse> kassen = new LinkedList<>();
-        List<Student> studenten = new ArrayList<>();
+        LinkedList<Student> studenten = new LinkedList<>();
 
         for (int i=0; i<3; i++) {
-            Kasse k = new Kasse("Kasse "+(i+1),kassenQueue);
+            Kasse k = new Kasse("Kasse "+(i+1),kassenQueue, studenten);
             kassen.add(k);
             k.start();
         }

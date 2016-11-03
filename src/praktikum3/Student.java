@@ -11,9 +11,9 @@ import java.util.List;
 public class Student extends Thread {
 
     private LinkedList<Kasse> kassen = new LinkedList<>();
-    private KassenQueue<Student> kassenQueue;
+    private KassenQueue<Kasse> kassenQueue;
 
-    public Student(String name, LinkedList<Kasse> kassen, KassenQueue<Student> kassenQueue) {
+    public Student(String name, LinkedList<Kasse> kassen, KassenQueue<Kasse> kassenQueue) {
         setName(name);
            if (kassen == null) {
                throw new IllegalArgumentException();
@@ -26,10 +26,10 @@ public class Student extends Thread {
 
         //Zur Kasse gehen
         while(!isInterrupted()) {
-            if (!kassenQueue.getQueue().contains(this)) {
+            if (!kassenQueue.getQueue().contains(this) && !kassenQueue.getReentrantLock().isLocked()) {
                 Collections.sort(kassen);
                 System.err.println(kassen.toString());
-                kassen.getFirst().getKassenQueue().enterToQueue(this);
+                kassenQueue.enterToQueue(kassen.getFirst());
                 System.err.println(getName()+" stellt sich in Kasse "+kassen.get(0).getName());
                 try {
                     Thread.sleep(2000);

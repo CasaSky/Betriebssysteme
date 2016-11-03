@@ -14,6 +14,15 @@ public class KassenQueue<T extends  Thread> {
 
     /** Mutex: Locked/Unlocked (Synchronisation des Pufferszugriffs **/
     private ReentrantLock reentrantLock = new ReentrantLock();
+
+    public ReentrantLock getReentrantLock() {
+        return reentrantLock;
+    }
+
+    public Semaphore getSemaphore() {
+        return semaphore;
+    }
+
     private Semaphore semaphore = new Semaphore(0);
 
     // Student geht zur Kasse
