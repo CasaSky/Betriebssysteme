@@ -1,27 +1,25 @@
 package praktikum3;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by talal on 02.11.16.
  */
 public class Mensa {
     public static void main(String[] args) {
-        KassenQueue<Student> kassenQueue = new KassenQueue<>();
+        KassenBuffer<Kasse> kassenBuffer = new KassenBuffer<>();
 
         LinkedList<Kasse> kassen = new LinkedList<>();
-        List<Student> studenten = new ArrayList<>();
+        LinkedList<Student> studenten = new LinkedList<>();
 
         for (int i=0; i<3; i++) {
-            Kasse k = new Kasse("Kasse "+(i+1),kassenQueue);
+            Kasse k = new Kasse("Kasse "+(i+1),kassenBuffer);
             kassen.add(k);
             k.start();
         }
 
         for (int i=0; i<10; i++) {
-            Student s = new Student("Student "+(i+1),kassen,kassenQueue);
+            Student s = new Student("Student "+(i+1),kassen, kassenBuffer);
             studenten.add(s);
             s.start();
         }

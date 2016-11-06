@@ -8,35 +8,42 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by talal on 02.11.16.
  */
-public class KassenQueue<T extends  Thread> {
+public class KassenBuffer<T extends  Thread> {
 
-    private Queue<T> queue = new LinkedList<T>();
+    private LinkedList<T> buffer = new LinkedList<T>();
 
     /** Mutex: Locked/Unlocked (Synchronisation des Pufferszugriffs **/
     private ReentrantLock reentrantLock = new ReentrantLock();
     private Semaphore semaphore = new Semaphore(0);
 
+
+    public ReentrantLock getReentrantLock() {
+        return reentrantLock;
+    }
+
+    public Semaphore getSemaphore() {
+        return semaphore;
+    }
+
     // Student geht zur Kasse
-    public void enterToQueue(T t) {
+    public void enter(T t) {
         reentrantLock.lock(); // Zugriff sperren(P)
-        queue.add(t);
+        buffer.add(t);
         reentrantLock.unlock(); // Zugriff entsperren(V)
         semaphore.release(); // Weckt einen wartenden Prozess(V)
     }
 
     // Student bezahlt und verlaesst die Kasse
-    public T quitQueue() throws InterruptedException {
+    public void quit(T t) throws InterruptedException {
         semaphore.acquire(); // Blockieren und warten (Wenn Puffer leer ist) (P)
         reentrantLock.lock();  // Zugriff sperren(P)
-        T t = queue.remove();
+        buffer.remove(t);
         reentrantLock.unlock(); // Zugriff entsperren(V)
-        t.join(2); // essen
-        return t;
     }
 
 
-    public Queue<T> getQueue() {
-        return queue;
+    public LinkedList<T> getBuffer() {
+        return buffer;
     }
 
 

@@ -1,36 +1,43 @@
 package praktikum3;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by talal on 02.11.16.
  */
 public class Student extends Thread {
 
-    private LinkedList<Kasse> kassen = new LinkedList<>();
-    private KassenQueue<Student> kassenQueue;
+    private KassenBuffer<Kasse> kassenBuffer;
+    private LinkedList<Kasse> kassen;
+    private boolean stehtAn;
 
-    public Student(String name, LinkedList<Kasse> kassen, KassenQueue<Student> kassenQueue) {
+    public boolean isStehtAn() {
+        return stehtAn;
+    }
+
+    public void setStehtAn(boolean stehtAn) {
+        this.stehtAn = stehtAn;
+    }
+
+    public Student(String name, LinkedList<Kasse> kassen, KassenBuffer<Kasse> kassenBuffer) {
         setName(name);
-           if (kassen == null) {
-               throw new IllegalArgumentException();
-           }
-           this.kassen = kassen;
-        this.kassenQueue = kassenQueue;
+        this.kassen = kassen;
+        this.kassenBuffer = kassenBuffer;
     }
     //
     public void run() {
 
         //Zur Kasse gehen
         while(!isInterrupted()) {
-            if (!kassenQueue.getQueue().contains(this)) {
+            if (!kassenBuffer.getReentrantLock().isLocked()) {
+                stehtAn = true;
                 Collections.sort(kassen);
                 System.err.println(kassen.toString());
-                kassen.getFirst().getKassenQueue().enterToQueue(this);
-                System.err.println(getName()+" stellt sich in Kasse "+kassen.get(0).getName());
+                Kasse k = kassen.getFirst();
+                k.addStudent(this);
+                kassenBuffer.enter(k);
+                System.err.println(getName()+" stellt sich in Kasse "+k.getName());
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
