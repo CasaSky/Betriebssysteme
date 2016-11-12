@@ -5,32 +5,57 @@ import java.util.LinkedList;
 /**
  * Created by talal on 02.11.16.
  */
-public class Mensa {
-    public static void main(String[] args) {
-        KassenBuffer<Kasse> kassenBuffer = new KassenBuffer<>();
+public class Mensa extends Thread{
+    KassenBuffer<Kasse> kassenBuffer = new KassenBuffer<>();
+    LinkedList<Kasse> kassenForBuffer = new LinkedList<>();
+    LinkedList<Student> studenten = new LinkedList<>();
 
-        LinkedList<Kasse> kassen = new LinkedList<>();
-        LinkedList<Student> studenten = new LinkedList<>();
+    int counter;
+    int schliessZeit;
+    int anzahlKassen, anzahlStudents;
 
-        for (int i=0; i<3; i++) {
-            Kasse k = new Kasse("Kasse "+(i+1),kassenBuffer);
-            kassen.add(k);
-            k.start();
+    public Mensa(int schliessZeit, int anzahlKassen, int anzahltStudents) {
+        this.schliessZeit = schliessZeit;
+        this.anzahlKassen = anzahlKassen;
+        this.anzahlStudents = anzahltStudents;
+    }
+
+    public void run() {
+        createKassen();
+        createStudents();
+
+        while (!isInterrupted()) {
+                if (counter != schliessZeit) {
+                    counter++;
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                    }
+                } else {
+                    System.err.println("----------------------------->Mensa ist geschlossen!");
+                    interrupt();
+                }
         }
+    }
 
-        for (int i=0; i<10; i++) {
-            Student s = new Student("Student "+(i+1),kassen, kassenBuffer);
-            studenten.add(s);
+    public void createStudents() {
+        for (int i=0; i<anzahlStudents; i++) {
+            Student s = new Student("Student "+(i+1), kassenBuffer);
             s.start();
+            studenten.add(s);
         }
+    }
 
-        for (Kasse k : kassen) {
-            try {
-                k.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+    public void createKassen() {
+        for (int i=0; i<anzahlKassen; i++) {
+            Kasse k = new Kasse("Kasse "+(i+1));
+            kassenForBuffer.add(k);
         }
+        kassenBuffer = new KassenBuffer<>(kassenForBuffer);
+    }
+
+    public void joinAll() throws InterruptedException {
+        super.join();
 
         for (Student s : studenten) {
             try {
@@ -39,14 +64,25 @@ public class Mensa {
                 e.printStackTrace();
             }
         }
+    }
 
-        for (Kasse k : kassen) {
-            k.interrupt();
-        }
+    public void interruptAll() {
+        super.interrupt();
 
         for (Student s : studenten) {
-            s.interrupt();
+            if (!s.isInterrupted()) {
+                s.interrupt();
+            }
         }
+    }
 
+    public LinkedList<Student> getStudenten() {
+        return studenten;
+    }
+
+    public static void main(String[] args) {
+
+        Mensa mensa = new Mensa(2, 3, 10);
+        mensa.start();
     }
 }

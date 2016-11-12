@@ -6,57 +6,22 @@ import java.util.Queue;
 /**
  * Created by talal on 02.11.16.
  */
-public class Kasse extends Thread implements Comparable<Kasse>{
-    private KassenBuffer<Kasse> kassenBuffer;
+public class Kasse implements Comparable<Kasse>{
+    private String name;
     private Queue<Student> students; //Warteschlange von Studenten
 
-    public Queue<Student> getStudents() {
-        return students;
-    }
-
-
-    public Kasse(String name, KassenBuffer<Kasse> kassenBuffer) {
+    public Kasse(String name) {
         setName(name);
-        this.kassenBuffer = kassenBuffer;
         this.students = new LinkedList<>();
     }
 
     // Student in der Warteschlange anstellen
-    public void addStudent(Student s) {
+    public void anstellen(Student s) {
         this.students.add(s);
     }
 
-    public Student bezahlen() {
-        Student s = this.students.poll(); // Student bezahlt und geht essen
-        s.setStehtAn(false);
-        return s;
-    }
-
-    public void run() {
-        while(!isInterrupted()) {
-            try {
-                if (!kassenBuffer.getReentrantLock().isLocked() && kassenBuffer.getBuffer().size()!=0) {
-
-                    if (this.getStudents().isEmpty()) {
-                        if (kassenBuffer.getBuffer().contains(this)) {
-                            kassenBuffer.quit(this);
-                            System.err.println(getName() + " is geschlossen!");
-                        }
-                    }
-                    else {
-                        Student s = bezahlen();
-                        System.err.println(s.getName()+" hat bezahlt und verlaesst die Kasse "+getName());
-                    }
-                    // kassenBuffer.enter(this);
-                }
-            } catch (InterruptedException e) {
-                interrupt();
-            }
-        }
-    }
-
-    public KassenBuffer<Kasse> getkassenBuffer() {
-        return kassenBuffer;
+    public void bezahlen()  {
+        students.remove();
     }
 
     @Override
@@ -68,6 +33,19 @@ public class Kasse extends Thread implements Comparable<Kasse>{
 
     @Override
     public String toString() {
-        return getName();
+        return getName()+"("+students.size()+")";
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Queue<Student> getStudents() {
+        return students;
+    }
+
 }
