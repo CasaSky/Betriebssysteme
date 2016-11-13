@@ -1,4 +1,4 @@
-package praktikum3;
+package praktikum3.mensaSimulation;
 
 import java.util.LinkedList;
 
@@ -82,7 +82,7 @@ public class Mensa extends Thread{
 
     public static void main(String[] args) {
 
-        Mensa mensa = new Mensa(2, 3, 10);
+        Mensa mensa = new Mensa(10, 3, 100);
         mensa.start();
     }
 }

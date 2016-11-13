@@ -426,7 +426,7 @@ ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsysca
 
 VM Arguments:
 jvm_args: -agentlib:jdwp=transport=dt_socket,address=127.0.0.1:37515,suspend=y,server=n -Dfile.encoding=UTF-8 
-java_command: praktikum3.Mensa
+java_command: praktikum3.mensaSimulation.Mensa
 java_class_path (initial): /opt/java/jdk1.8.0_101/jre/lib/charsets.jar:/opt/java/jdk1.8.0_101/jre/lib/deploy.jar:/opt/java/jdk1.8.0_101/jre/lib/ext/cldrdata.jar:/opt/java/jdk1.8.0_101/jre/lib/ext/dnsns.jar:/opt/java/jdk1.8.0_101/jre/lib/ext/jaccess.jar:/opt/java/jdk1.8.0_101/jre/lib/ext/jfxrt.jar:/opt/java/jdk1.8.0_101/jre/lib/ext/localedata.jar:/opt/java/jdk1.8.0_101/jre/lib/ext/nashorn.jar:/opt/java/jdk1.8.0_101/jre/lib/ext/sunec.jar:/opt/java/jdk1.8.0_101/jre/lib/ext/sunjce_provider.jar:/opt/java/jdk1.8.0_101/jre/lib/ext/sunpkcs11.jar:/opt/java/jdk1.8.0_101/jre/lib/ext/zipfs.jar:/opt/java/jdk1.8.0_101/jre/lib/javaws.jar:/opt/java/jdk1.8.0_101/jre/lib/jce.jar:/opt/java/jdk1.8.0_101/jre/lib/jfr.jar:/opt/java/jdk1.8.0_101/jre/lib/jfxswt.jar:/opt/java/jdk1.8.0_101/jre/lib/jsse.jar:/opt/java/jdk1.8.0_101/jre/lib/management-agent.jar:/opt/java/jdk1.8.0_101/jre/lib/plugin.jar:/opt/java/jdk1.8.0_101/jre/lib/resources.jar:/opt/java/jdk1.8.0_101/jre/lib/rt.jar:/home/talal/Dokumente/SpringProjects/Betriebsysteme/out/production/Betriebsysteme:/opt/idea-IC-162.2228.15/lib/idea_rt.jar
 Launcher Type: SUN_STANDARD
 

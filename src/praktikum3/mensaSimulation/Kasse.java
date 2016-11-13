@@ -1,4 +1,4 @@
-package praktikum3;
+package praktikum3.mensaSimulation;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -6,7 +6,7 @@ import java.util.Queue;
 /**
  * Created by talal on 02.11.16.
  */
-public class Kasse implements Comparable<Kasse>{
+public class Kasse {
     private String name;
     private Queue<Student> students; //Warteschlange von Studenten
 
@@ -16,19 +16,13 @@ public class Kasse implements Comparable<Kasse>{
     }
 
     // Student in der Warteschlange anstellen
-    public void anstellen(Student s) {
+    public void add(Student s) {
         this.students.add(s);
     }
 
-    public void bezahlen()  {
-        students.remove();
-    }
-
-    @Override
-    public int compareTo(Kasse o) {
-        int size1 = students.size();
-        int size2 = o.getStudents().size();
-        return Integer.compare(size1, size2);
+    public Student remove()  {
+        Student actualStudent = students.remove();
+        return actualStudent;
     }
 
     @Override
@@ -46,6 +40,23 @@ public class Kasse implements Comparable<Kasse>{
 
     public Queue<Student> getStudents() {
         return students;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Kasse)) return false;
+        Kasse kasse = (Kasse) o;
+        return name.equals(kasse.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    public boolean isEmpty() {
+        return students.isEmpty();
     }
 
 }
