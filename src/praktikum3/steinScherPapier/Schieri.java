@@ -21,6 +21,8 @@ public class Schieri extends Thread{
         this.maxRunden = maxRunden;
         this.spieler1 = spieler1;
         this.spieler2 = spieler2;
+        gewinne.put(spieler1, 0);
+        gewinne.put(spieler2, 0);
     }
 
     private synchronized void spielauswerten() throws InterruptedException {
@@ -32,15 +34,15 @@ public class Schieri extends Thread{
 
             switch (ergebniss) {
                 case 1: // bei 1 Spieler1 gewinnt.
-                    Integer value1 = gewinne.get(spieler1);
+                    Integer value1 = gewinne.get(spieler1) + 1;
                     System.out.println("\n**Runde " + runden + " geht an " + spieler1.getName() + "!**");
-                    gewinne.put(spieler1, value1 == null ? 1 : Integer.sum(value1, 1));
+                    gewinne.put(spieler1, value1);
                     break;
 
                 case 2: // bei 2 Spieler 2 gewinnt.
-                    Integer value2 = gewinne.get(spieler2);
+                    Integer value2 = gewinne.get(spieler2) + 1;
                     System.out.println("\n**Runde " + runden + " geht an " + spieler2.getName() + "!**");
-                    gewinne.put(spieler2, value2 == null ? 1 : Integer.sum(value2, 1));
+                    gewinne.put(spieler2, value2);
                     break;
 
                 default: // bei 0 ist ein unentschieden.
@@ -51,7 +53,7 @@ public class Schieri extends Thread{
             tisch.purge(); // tisch leeren.
             runden++;
         }
-        notifyAll();
+        //notifyAll();
     }
     public void run() {
         spieler1.start();
@@ -70,7 +72,7 @@ public class Schieri extends Thread{
     }
 
     public static void main(String[] args) throws InterruptedException {
-        TischBuffer<Spieler, Symbol> tisch = new TischBuffer<>();
+        TischBuffer<Spieler, Symbol> tisch = new TischBufferConditions();
         Spieler spieler1 = new Spieler("Talal", tisch);
         Spieler spieler2 = new Spieler("Cookie", tisch);
         Schieri cherie = new Schieri(tisch, 10, spieler1, spieler2);

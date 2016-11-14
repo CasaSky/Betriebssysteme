@@ -19,11 +19,12 @@ public class Spieler extends Thread {
         int size = Symbol.values().length;
         wahl = ThreadLocalRandom.current().nextInt(size);
         Symbol[] values = Symbol.values();
+
         try {
             tisch.enter(this, values[wahl]);
         } catch (InterruptedException e) {
-
         }
+
         System.out.println("\n*-->" + getName() + " " +values[wahl] + "<--*");
     }
 
