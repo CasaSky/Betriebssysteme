@@ -8,6 +8,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Spieler extends Thread {
     private TischBuffer<Spieler, Symbol> tisch;
     private Integer wahl;
+    private final Symbol[] values = Symbol.values();
+
 
     public Spieler(String name, TischBuffer<Spieler, Symbol> tisch) {
         setName(name);
@@ -15,17 +17,13 @@ public class Spieler extends Thread {
         this.tisch = tisch;
     }
 
-    public synchronized void spielen() {
+    public void spielen() {
         int size = Symbol.values().length;
         wahl = ThreadLocalRandom.current().nextInt(size);
-        Symbol[] values = Symbol.values();
-
         try {
             tisch.enter(this, values[wahl]);
         } catch (InterruptedException e) {
         }
-
-        System.out.println("\n*-->" + getName() + " " +values[wahl] + "<--*");
     }
 
     public void run() {

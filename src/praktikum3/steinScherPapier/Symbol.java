@@ -10,7 +10,7 @@ public enum Symbol {
 
     private final Integer index;
 
-     Symbol(Integer index) {
+    Symbol(Integer index) {
         this.index = index;
     }
 
